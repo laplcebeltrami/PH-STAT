@@ -1,7 +1,9 @@
 ### PH-STAT 
 MATLAB Toolbox for Statistical Inference on Persistent Homology
 
-Simply run [SCRIPT.m](https://github.com/laplcebeltrami/PH-STAT/blob/main/SCRIPT.m). 
+Simply run [SCRIPT.m](https://github.com/laplcebeltrami/PH-STAT/blob/main/SCRIPT.m). The detailed manual is provided here
+[PH-STAT.pdf](https://github.com/laplcebeltrami/PH-STAT/blob/main/PH-STAT.pdf).
+
 
 
 
