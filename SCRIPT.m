@@ -19,7 +19,6 @@
 % Topological characterization of signal in brain images using the min-max diagram. 
 % 12th International Conference on Medical Image Computing and Computer Assisted 
 % Intervention (MICCAI). Lecture Notes in Computer Science (LNCS). 5762:158-166.
-% 
 
 %Toy example
 % In the interval x=[0, 1], we construct a signal s and add noise e to obtain simulated signal Y.
@@ -53,12 +52,13 @@ PH_PD_display(pairs)
 %% Rips complex
 %genrate random p number of scatter points in [0,1]^d hyper-cube.
 %X is the matrix of size p x d of coordinates
+rng(2023); %fixed random seeds
 p=50; d=3;
 X = rand(p, d);
 
 %Compute the Rips complex up to 3-simplices.
-radius = 0.1;
-S= PH_rips(X, 3, radius)
+radius = 0;
+S= PH_rips(X, 2, radius)
 %Display Ris complex
 PH_rips_display(X,S);
 %labels = cellstr(num2str((1:p)', '% d'));
@@ -66,7 +66,7 @@ PH_rips_display(X,S);
 
 % Boundary matrices
 B = PH_boundary(S);
-betti = PH_boundary_betti(B)
+betti = PH_boundary_betti(B);
 title('\beta_0=1, \beta_1=4, \beta_2=0')
 
 
@@ -94,15 +94,37 @@ subplot(1,2,2); PH_PD_display(x2, f2); caxis([0 5])
 
 %-------------------
 %% Graph filtrations
-% 
-% w = pdist2(X,X);
-% maxw = max(w(:));
-% 
-% thresholds=[0:0.01:maxw]; 
-% [beta0, beta1, biggest0, biggest1] = PH__betti(w, thresholds);
-% 
-% figure;
-% hold on; plot(thresholds,beta0, 'Color', 'y' , 'LineWidth',1,'LineStyle',':')
-% hold on; plot(thresholds,beta1, 'b', 'LineWidth',2,'LineStyle','-')
-% 
+% The grph filtration is explained in 
+%
+% Chung, M.K., Lee, H. Ombao. H., Solo, V. 2019 Exact topological inference 
+% of the resting-state brain networks in twins, Network Neuroscience 3:674-694
+% http://www.stat.wisc.edu/~mchung/papers/chung.2019.NN.pdf
+%
+% Chung, M.K., Huang, S.-G., Gritsenko, A., Shen, L., Lee, H. 2o19
+% Statistical inference on the number of cycles in brain networks. 
+% IEEE International Symposium on Biomedical Imaging (ISBI) 113-116
+%
+% The graph filtration over filtration values epsilon is matheamticall equivaelnt 
+% to the Rips filtration with filtration values maximum distance - epsilon up to 1-simplices only.  
+
+rng(2023); %fixed random seeds
+p=50; d=3;
+X = rand(p, d);
+
+w = pdist2(X,X); %edge weights
+maxw = max(w(:)); %maximum edge weight
+
+%Betti curves over graph filtration
+thresholds=[0:0.05:maxw]; %filtration values
+beta_gf = PH_betti(w, thresholds);
+
+%display betti curves (beta-0 and beta-1)
+PH_betti_display(beta_gf,thresholds)
+
+%Equvalently, we can compute the graph filtration as Rips filtraions
+%The graph filtration at filtraion value e is equivalent to
+e = 0.7;
+S= PH_rips(X, 1, maxw-e);
+PH_rips_display(X,S);
+
 
