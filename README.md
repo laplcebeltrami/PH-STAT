@@ -7,4 +7,4 @@ Simply run [SCRIPT.m](https://github.com/laplcebeltrami/PH-STAT/blob/main/SCRIPT
 
 
 
-(C) 2023 Moo K. Chung, Zijian Chen, University of Wisconsin-Madison
+(C) 2023 Moo K. Chung, University of Wisconsin-Madison
