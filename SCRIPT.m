@@ -3,7 +3,7 @@
 % The package can be downloaded from
 % https://github.com/laplcebeltrami/PH-STAT
 %
-% (C) 2023 Moo K. Chung, Zijian Chen
+% (C) 2023 Moo K. Chung
 % Universtiy of Wisconsin-Madison 
 %
 % email: mkchung@wisc.edu
@@ -57,8 +57,8 @@ p=50; d=3;
 X = rand(p, d);
 
 %Compute the Rips complex up to 3-simplices.
-radius = 0;
-S= PH_rips(X, 2, radius)
+radius = 0.3;
+S= PH_rips(X, 3, radius)
 %Display Ris complex
 PH_rips_display(X,S);
 %labels = cellstr(num2str((1:p)', '% d'));
@@ -67,34 +67,15 @@ PH_rips_display(X,S);
 % Boundary matrices
 B = PH_boundary(S);
 betti = PH_boundary_betti(B);
-title('\beta_0=1, \beta_1=4, \beta_2=0')
+title(['Betti numbers=' num2str(betti)])
 
-
-% ---------------
-%% Sampling persistent diagram
-
-% Sampling from a single Dirichlet distribution 
-alpha=[3,2,3]'; %parameter
-weight=1;   %mixing propotion
-n=500;
-
-x1 = Dirichlet_sample(alpha,weight,n);
-f1 = Dirichlet_density(alpha, weight, x1);
-figure; subplot(1,2,1); PH_PD_display(x1, f1); caxis([0 5])
-
-% Sampling from a 3-components mixture of Dirichlet distributions
-alpha=[3,8,2;8,3,2;7,3,8;3,7,8]'; %parameter
-weight = [0.25,0.25,0.25,0.25]; %mixing propotion
-n = 500;
-
-x2 = Dirichlet_sample(alpha,weight,n);
-f2 = Dirichlet_density(alpha, weight, x2);
-subplot(1,2,2); PH_PD_display(x2, f2); caxis([0 5])
-
+% Hodge Laplacian
+H=PH_hodge(B);
+betti= PH_hodge_betti(H)
 
 %-------------------
 %% Graph filtrations
-% The grph filtration is explained in 
+% The graph filtration is explained in 
 %
 % Chung, M.K., Lee, H. Ombao. H., Solo, V. 2019 Exact topological inference 
 % of the resting-state brain networks in twins, Network Neuroscience 3:674-694
@@ -123,8 +104,102 @@ PH_betti_display(beta_gf,thresholds)
 
 %Equvalently, we can compute the graph filtration as Rips filtraions
 %The graph filtration at filtraion value e is equivalent to
-e = 0.7;
+e = 1;
 S= PH_rips(X, 1, maxw-e);
 PH_rips_display(X,S);
+
+
+%--------------------
+%% Topoloigcal inference on the Wasserstein distance
+% The Wasserstein distance in graph filtration is simplied to 1D
+% Wasserstein distance, which has the exact solution and can be computed in
+% O(p log q) run time. The deail is given in 
+
+% Songdechakraiwut, T., Shen, L., Chung, M.K. 2021 Topological learning and 
+% its application to multimodal brain network integration, Medical Image 
+% Computing and Computer Assisted Intervention (MICCAI), LNCS 12902:166-176 
+%
+% Songdechakraiwut, T. Chung, M.K. 2023 Topological learning for brain networks, 
+% Annals of Applied Statistics 17:403-433, arXiv:2012.00675.
+% https://arxiv.org/pdf/2012.00675.pdf
+
+
+% Random correlation matrix simulations
+
+p=50; %# of nodes
+
+% i-th group has less noise
+rng(1); 
+nGroup_i=5; %5 subjects 
+signal_i = randcorr(p); 
+for i=1:nGroup_i
+    con_i(:,:,i) = signal_i + randcorr(p); %signal plus noise
+end
+
+%j-th group has more noise
+rng(2);
+nGroup_j=5; %5 subject 
+signal_j = randcorr(p);
+for j=1:nGroup_j 
+    con_j(:,:,j) = signal_j + 2*randcorr(p); %signal plus noise
+end
+
+figure; subplot(2,1,1); imagesc(mean(con_i,3))
+axis square; clim([-1 1]); colorbar; figure_bigger(16)
+subplot(2,1,2); imagesc(mean(con_j,3))
+axis square; clim([-1 1]); colorbar
+figure_bg('w'); figure_bigger(16)
+
+
+% Computing and visualizing Betti-0 and Betti-1 curves
+
+thresholds=[-0.5:0.01:1]; %you can change the range
+PH_graph_betti_display(con_i, con_j,thresholds)
+
+
+% Pairwise topological distances. It includes 3 topological distances
+
+lossMtx = WS_pdist2(con_i,con_j);
+WS_pdist2_display(con_i,con_j);
+
+% p-value computation using the raio statistic (between-distance/within-distance)
+%Here we show example of using the combined distance. For different
+%distances,use lossMtx.D0 or lossMtx.D1, lossMtx.D01 = lossMtx.D0 + lossMtx.D1.
+
+observed = WS_ratio(lossMtx.D01, nGroup_i, nGroup_j) 
+nTrans = 500000; %Total number of transpositions
+permNo = 500; %Total number of intermixed permutations. This is needed to introduce randomness.
+
+[transStat, ~] = WS_transpositions(lossMtx.D01, nGroup_i, nGroup_j, nTrans, permNo); 
+transPval = online_pvalues(transStat', observed);
+pval = transPval(end)
+figure; plot(transPval(1:10000)); ylim([0 0.05])
+
+% histrogram. red line is observed statistic
+figure; %hisgrom with 25 bins
+plot_distribution(transStat, 25, observed)
+
+
+%% Topololigcal clustering using the Wasserstein distance
+% The Wasserstin distance based topological clustering is explained in
+%
+% Chung, M.K.,  Ramos, C.G., De Paiva, F.B., Jedidiah M., Prabharakaren, V., Nair, V.A., 
+% Meyerand, E., Hermann, B.P., Binder, J.R., Struck, A.F. 2023 arXiv preprint arXiv:2302.06673
+% https://arxiv.org/pdf/2302.06673
+
+g_i = squeeze(mat2cell(con_i, p, p, ones(nGroup_i,1))); %convert to cell array
+g_j = squeeze(mat2cell(con_j, p, p, ones(nGroup_j,1))); %convert to cell array
+G=[g_i g_j];
+
+%Topological clustering
+acc_WS  = WS_cluster(G)
+
+%k-means clustering
+acc_K = kmeans_cluster(G)
+
+%Hierarchical clustering
+acc_H = hierarchical_cluster(G)
+
+
 
 
