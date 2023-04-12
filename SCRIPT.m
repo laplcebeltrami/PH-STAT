@@ -145,10 +145,9 @@ for j=1:nGroup_j
 end
 
 figure; subplot(2,1,1); imagesc(mean(con_i,3))
-axis square; clim([-1 1]); colorbar; figure_bigger(16)
+axis square; clim([-1 1]); colorbar;
 subplot(2,1,2); imagesc(mean(con_j,3))
 axis square; clim([-1 1]); colorbar
-figure_bg('w'); figure_bigger(16)
 
 
 % Computing and visualizing Betti-0 and Betti-1 curves
