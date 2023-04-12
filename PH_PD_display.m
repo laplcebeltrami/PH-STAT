@@ -13,6 +13,9 @@ function PH_PD_display(pairs, f)
 % The code is downloaded from
 % https://github.com/laplcebeltrami/PH-STAT
 
+
+figure; 
+
 if nargin <=1
 
     plot(pairs(:,1),pairs(:,2), 'o','MarkerEdgeColor','k', 'MarkerFaceColor',...
