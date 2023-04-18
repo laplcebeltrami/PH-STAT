@@ -1,5 +1,5 @@
-function S = PH_graphfiltration(X, e)
-%   S = PH_graphfiltration(X,e) computes the 1-skeleton out of graph
+function S = PH_graph(X, e)
+%   S = PH_graph(X, e) computes the 1-skeleton out of graph
 %   filtration at filtration value e
 %
 %   Inputs:
