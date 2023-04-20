@@ -179,7 +179,7 @@ figure; %hisgrom with 25 bins
 plot_distribution(transStat, 25, observed)
 
 
-%% Topololigcal clustering using the Wasserstein distance
+% Topololigcal clustering using the Wasserstein distance
 % The Wasserstin distance based topological clustering is explained in
 %
 % Chung, M.K.,  Ramos, C.G., De Paiva, F.B., Jedidiah M., Prabharakaren, V., Nair, V.A., 
@@ -198,6 +198,23 @@ acc_K = kmeans_cluster(G)
 
 %Hierarchical clustering
 acc_H = hierarchical_cluster(G)
+
+
+% Topololigcal embedding
+[z_i, c_i] = WS_embed(con_i);
+[z_j, c_j] = WS_embed(con_j);
+
+figure;
+plot(z_i.x +c_i(1), z_i.y + c_i(2), 'ob', 'MarkerSize',10, 'MarkerFaceColor','g')
+hold on; plot(c_i(1), c_i(2), 'sb', 'MarkerSize',10, 'MarkerFaceColor','b')
+
+hold on; plot(z_j.x +c_j(1), z_j.y + c_j(2), 'or','MarkerSize',10, 'MarkerFaceColor','y')
+hold on; plot(c_j(1), c_j(2), 'sr', 'MarkerSize',10, 'MarkerFaceColor','r')
+axis square
+xlabel('Births');
+ylabel('Deaths')
+
+
 
 
 
