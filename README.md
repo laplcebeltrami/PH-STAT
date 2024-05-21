@@ -11,3 +11,5 @@ Now the package can do topological embedding
 
 
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
+
+The project is funded in part by NIH MH133614.
