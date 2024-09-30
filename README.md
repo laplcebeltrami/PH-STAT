@@ -16,4 +16,4 @@ The package was used to perform the following topological tasks (topological clu
 
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
 
-The project is funded in part by NIH MH133614.
+
