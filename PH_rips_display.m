@@ -1,12 +1,17 @@
 function PH_rips_display(X, S)
-%   PH_rips_display(X, S) displays the simplicial complex defined by the
-%   vertex coordinates X and the simplices in the cell array S. The function
-%   plots the vertices as black dots in 3D, and the edges as black lines.
+%   PH_rips_display(X, S) displays the simplicial complex defined 
+%   by the vertex coordinates X and the simplices in the cell array S. 
+%   The function plots the vertices as black dots in 3D, and the edges 
+%   as black lines.
 %
 %   Inputs:
 %       X - a p x d matrix of coordinates of scatter points in R^d
-%       S - a cell array containing the simplices of the simplicial complex
-
+%       S - a cell array containing the simplices of the simplicial 
+%           complex
+%
+%   Outputs:
+%       Yellow: 2-simplices, blue: 3-simplices 
+%
 % Compute the dimension of the simplicial complex
 %
 %
