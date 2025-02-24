@@ -23,9 +23,7 @@ if nargin <=1
     xlabel('Births'); ylabel('Deaths')
 
     set(gca, 'Fontsize',16);
-    whitebg(gcf,'w');
-    set(gcf,'Color','w','InvertHardcopy','off');
-
+ 
 else %if function value f is available
     % change 20 to somehting else to change the size of nodes
     scatter(pairs(:,1), pairs(:,2),20, f,'filled'); colorbar
@@ -33,6 +31,4 @@ else %if function value f is available
     xlabel('Births'); ylabel('Deaths')
 
     set(gca, 'Fontsize',16);
-    whitebg(gcf,'w');
-    set(gcf,'Color','w','InvertHardcopy','off');
 end
