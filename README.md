@@ -1,4 +1,4 @@
-## PH-STAT (Statistical Inference on Persistent Homology)
+## PH-STAT (Statistical Inference and Learning on Persistent Homology)
 
 MATLAB Toolbox for Statistical Inference on Persistent Homology
 
