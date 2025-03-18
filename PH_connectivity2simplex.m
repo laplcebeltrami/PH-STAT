@@ -1,88 +1,86 @@
 function S = PH_connectivity2simplex(C, tau, maxDim)
-% PH_connectivity2simplex constructs a simplicial complex from a 
-% correlation matrix using a single threshold tau, building higher-dimensional
-% simplices iteratively from lower-dimensional ones.
+% PH_connectivity2simplex constructs a simplicial complex from a
+% correlation matrix using threshold tau. Tries to speed up the building 
+% of higher-dimensional simplices via adjacency lists and set intersections.
 %
 %   S = PH_connectivity2simplex(C, tau, maxDim) builds a simplicial
 %   complex from the weighted connectivity matrix C (p x p) as follows:
 %
 %       - Nodes (0-simplices) are the p time series (or brain regions).
-%
 %       - An edge (1-simplex) between nodes i and j is included if C(i,j) > tau.
-%
-%       - A triangle (2-simplex) among nodes i, j, and k is included if every pair
-%         among {i, j, k} has C > tau.
-%
-%       - A tetrahedron (3-simplex) among nodes i, j, k, and l is included if every
-%         pair among {i, j, k, l} has C > tau.
-%
-%       - And so on, up to the maximum simplex dimension maxDim.
+%       - A triangle (2-simplex) is included if each pair of vertices 
+%         in that triple has C > tau, etc., up to maxDim.
 %
 %   The function returns a cell array S, where:
 %       S{1} is a column vector of nodes,
-%       S{2} is a matrix of edges (each row is a 2-element vector),
-%       S{3} is a matrix of triangles (each row is a 3-element vector),
-%       S{4} is a matrix of tetrahedra (each row is a 4-element vector), etc.
+%       S{2} is a matrix of edges,
+%       S{3} is a matrix of triangles, etc.
 %
 %   Inputs:
-%       C      - p x p correlation matrix (assumed symmetric, with ones on the diagonal)
-%       tau    - scalar threshold used uniformly to include simplices
+%       C      - p x p correlation matrix (assumed symmetric, ones on diagonal)
+%       tau    - threshold for including simplices
 %       maxDim - maximum dimension of the simplicial complex 
-%                (e.g., maxDim = 3 builds up to tetrahedra, so S will have 4 cells)
 %
 %   Output:
 %       S      - Cell array representing the simplicial complex.
 %
+%  The function is downloaded from https://github.com/laplcebeltrami/PH-STAT
+%  and part of PH-STAT pacakge.
+%
 % (C) 2025 Moo K. Chung
-%   University of Wisconsin-Madison
+%     University of Wisconsin-Madison
 %     Email: mkchung@wisc.edu
 
-% Get the number of nodes.
 p = size(C,1);
-
-%% Build the Simplicial Complex S Iteratively
-
-% S{1}: 0-simplices (nodes)
-% Each node is simply represented by its index.
 S{1} = (1:p)';
 
-% S{2}: 1-simplices (edges)
-% Include each edge (i,j) with i < j if C(i,j) > tau.
-edges = [];
-for i = 1:p-1
-    for j = i+1:p
-        if C(i,j) > tau
-            edges = [edges; i, j]; %#ok<AGROW>
-        end
-    end
-end
-S{2} = edges;
+% Build adjacency matrix.
+A = (C > tau);
 
-% For higher dimensions d>=2, build S{d+1} from S{d} iteratively.
+% Build edges (1-simplices) using the upper triangle of A.
+[i,j] = find(triu(A,1));
+S{2} = [i,j];
+
+% Create adjacency lists: adjacencyList{n} = row vector of neighbors of node n.
+% Using cell arrays for flexible storage.
+adjacencyList = cell(p,1);
+for n = 1:p
+    adjacencyList{n} = find(A(n,:));
+end
+
+% Build higher-dimensional simplices up to maxDim.
 for d = 2:maxDim
-    % S{d} contains the (d-1)-simplices.
     prevSimplices = S{d};
     newSimplices = [];
     
-    % Iterate over each (d-1)-simplex.
-    for i = 1:size(prevSimplices, 1)
-        simplex = prevSimplices(i, :);
-        % To avoid duplicates, we only add a new vertex v that is greater than the maximum
-        % vertex in the current simplex.
+    for k = 1:size(prevSimplices,1)
+        simplex = prevSimplices(k,:);
         m = max(simplex);
-        for v = m+1:p
-            % Check if vertex v is connected to every vertex in 'simplex'
-            % i.e., for every u in 'simplex', we need C(v,u) > tau.
-            if all(C(v, simplex) > tau)
-                % If so, the new simplex is the union of the current simplex and vertex v.
-                newSimplex = sort([simplex, v]);  % Sorting is optional if simplex is already sorted.
-                newSimplices = [newSimplices; newSimplex]; %#ok<AGROW>
+        
+        % Intersect adjacency lists of each node in 'simplex' to find common neighbors.
+        % Start with the neighbors of the first node, then intersect repeatedly.
+        commonNeighbors = adjacencyList{simplex(1)};
+        for idx = 2:length(simplex)
+            commonNeighbors = intersect(commonNeighbors, adjacencyList{simplex(idx)});
+            if isempty(commonNeighbors)
+                break;  % Faster exit if no intersection remains
             end
+        end
+        
+        % Keep only those neighbors that exceed 'm' to avoid duplicates.
+        commonNeighbors = commonNeighbors(commonNeighbors > m);
+        
+        % Form new (d+1)-simplices.
+        for v = commonNeighbors
+            newSimplex = [simplex, v];
+            newSimplices = [newSimplices; sort(newSimplex)]; %#ok<AGROW>
         end
     end
     
-    % Store the new simplices in S{d+1}. 
-    % If no new simplices are found, S{d+1} will be an empty matrix.
+    % Remove duplicates (if any).
+    if ~isempty(newSimplices)
+        newSimplices = unique(newSimplices,'rows');
+    end
     S{d+1} = newSimplices;
 end
 
