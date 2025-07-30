@@ -41,38 +41,48 @@ function acc = WS_cluster(G)
 %  Contact mkchung@wisc.edu for support 
 %
 % Update history
-%   December 22, 2021 create
-%   Otober 24, 2022 updated
-%   March 25, 2023 made into a function
+%   2021 December 22 created
+%   2022 Otober 24   updated
+%   2023 March 25    made into a function
+%   2025 July 30     error fixed handling multiple graphs in multiple clusters
 
 
 %% Compute set of births and set of deaths
 
-nG = size(G,1); %number of graphs in each cluster
-nC = size(G,2); %number of clusters
+nC = size(G, 2);           % number of clusters
+b = cell(1, nC);           % cell array of birth edges for each cluster
+d = cell(1, nC);           % cell array of death edges for each cluster
 
-nNetworks = nG*nC; %total number of networks
-
-b=cell(nG,nC); % # of networks x # of clusters
-d=cell(nG,nC);
-
-% Perform birth-death decomposition 
-for j=1:nC 
-    for i=1:nG
-        [b{i,j}, d{i,j}] =WS_decompose(G{i,j});
+for j = 1:nC
+    Gstack = G{1, j};      % this is a 3D matrix: n × n × (# graphs in cluster j)
+    nG_j = size(Gstack, 3);
+    
+    b{j} = cell(nG_j, 1);
+    d{j} = cell(nG_j, 1);
+    
+    for i = 1:nG_j
+        W = Gstack(:, :, i);
+        [b{j}{i}, d{j}{i}] = WS_decompose(W);
     end
 end
 
-%Tranforms birth and death values into a matrix form of size
-%(nBirths+nDeaths) x nNetworks in each cluster.
 
-M=[];
-for j=1:nC
-    for i=1:nG
-        bd=[b{i,j}(:,3); d{i,j}(:,3)];
-        M = [M bd];
+% Assemble feature matrix M and true label vector ytrue
+M = [];
+ytrue = [];
+
+for j = 1:nC
+    nG_j = numel(b{j});  % Number of graphs in cluster j
+
+    for i = 1:nG_j
+        bd = [b{j}{i}(:,3); d{j}{i}(:,3)];
+        M = [M bd];  % concatenate along columns
     end
+
+    ytrue = [ytrue; repmat(j, nG_j, 1)];
 end
+
+
 
 %M should be stored as [cluster1, cluster2, ...]
 %M is a matrix of size # of (brith + death values) x # of subjects in each
@@ -81,20 +91,15 @@ end
 %The clustering_accuracy.m computation is based on the techncial report 
 %https://github.com/laplcebeltrami/clustering/blob/main/clustering.accuracy.pdf
 
-ytrue=[]; %true labels
-for i = 1:nC
-    % add i to the sequence of clusters
-    ytrue = [ytrue; repmat(i, nG, 1)];
+nRep = 100; %number of replications
+accuracy = zeros(nRep, 1);
+for i = 1:nRep
+    ypred = kmeans(M', nC);
+    [clustering_acc, ~] = clustering_accuracy(ytrue, ypred);
+    accuracy(i) = clustering_acc;
 end
 
-accuracy=[];
-for i=1:100
-    ypred = kmeans(M',nC);
-    [clustering_acc C] = clustering_accuracy(ytrue,ypred);
-    accuracy(i)=clustering_acc;
-end
-
-acc.mean= mean(accuracy);
+acc.mean = mean(accuracy);
 acc.std = std(accuracy);
 
 
