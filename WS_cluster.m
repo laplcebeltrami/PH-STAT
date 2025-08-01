@@ -31,7 +31,6 @@ function acc = WS_cluster(G)
 % The function is downloaded from 
 % http://pages.stat.wisc.edu/~mchung/publication.html
 %
-%
 % The function is downloaded from
 % https://github.com/laplcebeltrami/PH-STAT
 %
@@ -49,40 +48,37 @@ function acc = WS_cluster(G)
 
 %% Compute set of births and set of deaths
 
-nC = size(G, 2);           % number of clusters
-b = cell(1, nC);           % cell array of birth edges for each cluster
-d = cell(1, nC);           % cell array of death edges for each cluster
+%% Compute set of births and set of deaths
 
-for j = 1:nC
-    Gstack = G{1, j};      % this is a 3D matrix: n × n × (# graphs in cluster j)
-    nG_j = size(Gstack, 3);
-    
-    b{j} = cell(nG_j, 1);
-    d{j} = cell(nG_j, 1);
-    
-    for i = 1:nG_j
-        W = Gstack(:, :, i);
-        [b{j}{i}, d{j}{i}] = WS_decompose(W);
+nG = size(G,1); %number of graphs in each cluster
+nC = size(G,2); %number of clusters
+
+nNetworks = nG*nC; %total number of networks
+
+b=cell(nG,nC); % # of networks x # of clusters
+d=cell(nG,nC);
+
+% Perform birth-death decomposition 
+for j=1:nC 
+    for i=1:nG
+        [b{i,j}, d{i,j}] =WS_decompose(G{i,j});
     end
 end
 
+%Tranforms birth and death values into a matrix form of size
+%(nBirths+nDeaths) x nNetworks in each cluster.
 
-% Assemble feature matrix M and true label vector ytrue
-M = [];
-ytrue = [];
-
-for j = 1:nC
-    nG_j = numel(b{j});  % Number of graphs in cluster j
-
-    for i = 1:nG_j
-        bd = [b{j}{i}(:,3); d{j}{i}(:,3)];
-        M = [M bd];  % concatenate along columns
+M=[];
+for j=1:nC
+    for i=1:nG
+        bd=[b{i,j}(:,3); d{i,j}(:,3)];
+        M = [M bd];
     end
-
-    ytrue = [ytrue; repmat(j, nG_j, 1)];
 end
 
-
+%M should be stored as [cluster1, cluster2, ...]
+%M is a matrix of size # of (brith + death values) x # of subjects in each
+%cluster
 
 %M should be stored as [cluster1, cluster2, ...]
 %M is a matrix of size # of (brith + death values) x # of subjects in each
@@ -90,6 +86,12 @@ end
 
 %The clustering_accuracy.m computation is based on the techncial report 
 %https://github.com/laplcebeltrami/clustering/blob/main/clustering.accuracy.pdf
+
+ytrue=[]; %true labels
+for i = 1:nC
+    % add i to the sequence of clusters
+    ytrue = [ytrue; repmat(i, nG, 1)];
+end
 
 nRep = 100; %number of replications
 accuracy = zeros(nRep, 1);
@@ -124,11 +126,50 @@ function [accuracy C]=clustering_accuracy(ytrue,ypred)
 %   2021 Nov 28 
 %   2023 Apri 11 function name changed from clustering_accuracy.m to cluster_accuracy.m
 
+%test data
+%ytrue = [ 1 1 1  2 2 3 3]
+%ypred = [ 1 1 2  1 1 3 3]
+
 n=length(ytrue); % number of samples
+
+%confusion matrix
 C = confusionmat(ytrue,ypred); 
+
+%figure; heatmap(C); colorbar
+
+%The iteration below also computes the confusion matrix
+%k=max([ytrue(:); ypred(:)]) %find # of cluster
+%C=zeros(k);
+%for i=1:n  
+%    C(ypred(i),ytrue(i))=C(ypred(i),ytrue(i))+1;
+%end
+
+%test example
+%2     2     0
+%1     0     0
+%0     0     2
+     
+
+%solve the linear assignment problem of maximizing the clusting result
+% 0 is the cost of mismatch. We ony care matched pairs
 M=matchpairs(C, 0, 'max'); 
+
+% test example
+% 2 1 
+% 1 2
+% 3 3
+
 accuracy=sum(C(sub2ind(size(C), M(:,1), M(:,2))))/n;
 
+%permuated confusion matrix that maximizes the diagonal elements
+
+% P=[]; %permutation matrix
+% for i=1:size(M,1)
+%   P(M(i,1),M(i,2)) = 1;
+% end
+% 
+% C=P*C*P;
+% figure;  heatmap(C); colorbar
 
 
 %----------------
