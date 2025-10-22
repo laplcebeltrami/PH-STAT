@@ -15,11 +15,17 @@ function betti = PH_boundary_betti(B)
 %       betti{k} is the (k-1)-th Betti number. 
 %
 %
-% (C) 2023 Moo K. Chung, Universtiy of Wisconsin-Madison 
-%
+% (C) 2023 Moo K. Chung, 
+%     Universtiy of Wisconsin-Madison 
 %     Email: mkchung@wisc.edu
 %
-% Compute the number of dimensions of the simplicial complex
+% Update: Works for sparse matrices as well - Oct 22 2025
+
+%make it full matrix from sparse
+for i = 1:length(B)
+    B{i} = full(B{i});
+end
+
 k = length(B);
 p = size(B{1},1); %number of nodes
 
