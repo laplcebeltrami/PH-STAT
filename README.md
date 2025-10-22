@@ -7,6 +7,8 @@ Currently under development but we made some of codes available for test run and
 The package can perform the following topological tasks: Rips filtration, graph fltration, topological clustering, topological embedding. About 80% of functionalities are not implmented yet. The codes are constnatly updated and debugged. 
 
 
+
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
+Update history: Last update October 22, 2025
 
 
