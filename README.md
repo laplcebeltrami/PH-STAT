@@ -9,6 +9,7 @@ The package can perform the following topological tasks: Rips filtration, graph 
 
 
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
+
 Update history: Last update October 22, 2025
 
 
