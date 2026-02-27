@@ -80,7 +80,7 @@ set(gcf, 'Position', [400 400 600 250])
 
 plot(pvalue(1:10000),'k','LineWidth', 2)
 xlabel ('Number of permutations'); ylabel('p-value')
-whitebg(gcf,'w');
+%whitebg(gcf,'w');
 set(gcf,'Color','w','InvertHardcopy','off');
 
 set(gca, 'fontsize',16) 

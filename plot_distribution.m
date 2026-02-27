@@ -19,14 +19,38 @@ function plot_distribution(stat_s, bins, observation, binRange, bincolor)
 %   2023 - Added optional arguments for binRange and bincolor to handle variable
 %          number of input arguments gracefully.
 %   2025 argument based error fixed
+%   2026 Feb 26, binrange fixed to account for extrem rate events. 
 
 % If fewer than 5 arguments are provided, define defaults for binRange and bincolor.
 if nargin < 5 || isempty(bincolor)
     bincolor = [0.7, 0.7, 0.7];  % default gray
 end
+
 if nargin < 4 || isempty(binRange)
-    binRange = [];  % no specific bin range
+    % Robust default range: avoid being dominated by extreme outliers.
+    % Use central quantiles (winsorized range) so histogram does not collapse. 
+    stat_s0 = stat_s(isfinite(stat_s));
+    if isrow(stat_s0), stat_s0 = stat_s0'; end
+
+    if isempty(stat_s0)
+        binRange = []; % no data  
+    else
+        % central 0.5%–99.5% range (adjust if you want)
+        qL = prctile(stat_s0, 0.5);
+        qU = prctile(stat_s0, 99.5);
+
+        if qU == qL
+            % near-constant distribution: create a small window
+            eps0 = 1e-6 + abs(qL)*1e-6;
+            binRange = [qL - eps0, qU + eps0];  
+        else
+            % small padding so edge values are not stuck on borders
+            pad = 0.02*(qU - qL);
+            binRange = [qL - pad, qU + pad];    
+        end
+    end
 end
+
 
 % Ensure stat_s is a column vector
 [rows, cols] = size(stat_s);
@@ -58,6 +82,4 @@ xlabel('Test Statistic');
 ylabel('Probability');
 title('Distribution');
 
-%whitebg(gcf,'w');
-set(gcf,'Color','w','InvertHardcopy','off');
 
