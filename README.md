@@ -1,4 +1,4 @@
-## PH-STAT (Statistical Inference on Persistent Homology)
+## Statistical Inference on Persistent Homology (PH-STAT)
 
 Standalone MATLAB Toolbox for Statistical Inference on Persistent Homology
 
@@ -6,7 +6,7 @@ Currently under development but we made some of codes available for test run and
 
 The package can perform the following topological tasks: Rips filtration, graph fltration, topological clustering, topological embedding. About 80% of functionalities are not implmented yet. The codes are constnatly updated and debugged. 
 
-If you are using any part of toy example, data or codes in the package, plese reference [arXiv:2304.05912](http://arxiv.org/abs/2304.05912).If you like to see some specific functionality, please send request to mkchung at wisc dot edu. 
+If you are using any part of toy example, data or codes in the package, plese reference [arXiv:2304.05912](http://arxiv.org/abs/2304.05912). If you like to see some specific functionality, please send request to mkchung at wisc dot edu. 
 
 
 
