@@ -1,15 +1,19 @@
-function vec = adj2vec(adj, k);
+function vec = adj2vec(adj, k)
+% function vec = adj2vec(adj, k)
 %
-% function vec = adj2vec(adj,k);
-% vectorize the square matrix and produce the vector of elemenets 
-% in the upper triangle. For example, from the distance matrix, it produces the pdist.
-% 
-% INPUT:
-% adj has to be bigger than 2 x 2 matrix
-% k   row index. If k=1. It vectorize from the diagonal. 
-% If k=2, it vectorize above the 2nd row exluding diagonal.
+% Vectorizes a square matrix by extracting upper triangular elements.
 %
-% Given
+% INPUT
+%   adj : square matrix (n x n)
+%   k   : optional starting row index
+%         k = 1 → include from first row (default)
+%         k = 2 → skip first row (exclude diagonal behavior similar
+%         to pdist)
+%
+% OUTPUT
+%   vec : row vector of selected upper-triangular elements
+%
+% EXAMPLE
 % adj = [ 0  1  2  3;
 %        1  0  4  5;
 %        2  4  0  6;
@@ -20,15 +24,24 @@ function vec = adj2vec(adj, k);
 %
 % (C) 2019 Moo K. Chung 
 % University of Wisconsin-Madison
-% mkchung@wics.edu
 %
+% Update history
+%   2026 Mar 17 unified optional argument handling 
 
-
-n=size(adj,1);
-vec=adj(1,2:end);
- 
-if n>=2
-    for i=k:n
-        vec= [vec adj(i,i+1:end)];
-    end; 
+if nargin < 2
+    k = 1;   
 end
+
+n = size(adj,1);
+
+vec = [];    
+
+for i = k:n
+    if i < n
+        vec = [vec adj(i, i+1:end)];
+    end
+end
+
+end
+
+

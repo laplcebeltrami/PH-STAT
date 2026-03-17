@@ -11,7 +11,7 @@ function acc = GH_cluster(G)
 %
 % The topologial cluserting method is explained in 
 % 
-% [1] % Chung, M.K., Huang, S.-G., Carroll, I.C., Calhoun, V.D., Goldsmith, H.H. 
+% [1] Chung, M.K., Huang, S.-G., Carroll, I.C., Calhoun, V.D., Goldsmith, H.H. 
 % 2023 Topological  State-Space Estimation of Functional Human Brain Networks. arXiv:2201:00087
 %
 % [2] Moo K. Chung, Camille Garcia Ramos, Felipe Branco De Paiva, Jedidiah Mathis, Vivek Prabharakaren, 
@@ -36,7 +36,7 @@ function acc = GH_cluster(G)
 %
 % (C) 2020 Moo K. Chung
 %     University of Wisconsin-Madison
-%  Contact mkchung@wisc.edu for support 
+%     Contact mkchung@wisc.edu for support 
 %
 % Update history
 %   December 22, 2021 create
