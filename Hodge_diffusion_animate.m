@@ -61,7 +61,7 @@ cellcomplex_display(S); hold on;
 if ~isempty(Z)
     graph_overlay_timeseries(Nodes, Z);
 end
-cellcomplex_display_flows_colored(S, X, vmin0, vmax0);
+cellcomplex_display_flows(S, X, vmin0, vmax0);
 title(sprintf('1-Hodge Diffusion  (t = %.2f)', 0), 'FontSize', 18);
 drawnow;
 pause(0.03);   
@@ -82,7 +82,7 @@ for step = 1:nSteps
             graph_overlay_timeseries(Nodes, Z);
         end
 
-        cellcomplex_display_flows_colored(S, X, vmin0, vmax0);
+        cellcomplex_display_flows(S, X, vmin0, vmax0);
 
         % diagnostic: non-harmonic components decay under diffusion
         r = norm(Delta1 * X); %#ok<NASGU>
