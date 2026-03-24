@@ -15,14 +15,18 @@ function PH_rips_display(X, S)
 % Compute the dimension of the simplicial complex
 %
 %
-% (C) 2023 Moo K. Chung, Universtiy of Wisconsin-Madison 
-%
-%     Email: mkchung@wisc.edu
-
-
+% (C) 2023 Moo K. Chung
+% Universtiy of Wisconsin-Madison 
+% Email: mkchung@wisc.edu
+% 
+% Update history: 2026 Mar 24 X can be 2D now
 
 k = length(S) - 1;
 
+% Ensure X is 3D  
+if size(X,2) == 2
+    X = [X, zeros(size(X,1),1)];
+end
 % Create a 3D scatter plot of the vertices
 figure;
 scatter3(X(:,1), X(:,2), X(:,3), 30, 'k', 'filled');
