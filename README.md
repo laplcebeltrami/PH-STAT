@@ -4,27 +4,17 @@ Standalone MATLAB Toolbox for Statistical Inference on Persistent Homology
 
 Currently under development (about 20% complete) but we made some of codes available for test run and debug purpose. Please provide feedback and corrections. Simply load MATLAB live editor file [SCRIPT.mlx](https://github.com/laplcebeltrami/PH-STAT/blob/main/SCRIPT.mlx). The detailed manual is available as arXiv at [arXiv:2304.05912](http://arxiv.org/abs/2304.05912). If you are using or modifying these tools, please reference arXiv. 
 
-The package can perform the following topological tasks: Rips filtration, graph fltration, topological clustering, topological embedding, Hodge Laplacian based learning tasks. About 80% of functionalities are not implmented yet. The codes are constnatly updated and debugged. If you are using any part of toy example, data or codes in the package, plese reference [arXiv:2304.05912](http://arxiv.org/abs/2304.05912). If you like to see some specific functionality, please send request to mkchung at wisc dot edu. The table of content of the SCRIPT.mlx is as follows
+The package can perform the following topological tasks: Rips filtration, graph fltration, topological clustering, topological embedding, Hodge Laplacian based learning tasks. About 80% of functionalities are not implmented yet. The codes are constnatly updated and debugged. If you are using any part of toy example, data or codes in the package, plese reference [arXiv:2304.05912](http://arxiv.org/abs/2304.05912). If you like to see some specific functionality, please send request to mkchung at wisc dot edu. 
 
-Morse filtration
-Rips complex
-    Boundary matrices
-    Higher order interactions
-Graph filtrations
-Topological Inference
-    Topological distance
-    Topoloigcal inference
-    Topololigcal embedding
-    Distribution of topological distance
-Topological Clustering
-    Ground truth for testing false negatives
-    Ground truth for testing false positives
-    Clustering comparisons
+Currently SCRIPT.mlx has
+
+Morse filtration, 
+Rips complex, 
+Graph filtrations, 
+Topological Inference, 
+Topological Clustering, 
 Hodge Laplacian
-    Graph to Hodge Laplacian
-    Simplicial complex to Hodge Laplacian
-    Diffusion on edge signals
-    Hodge Decompostion of Brain Networks
+
 
 
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
