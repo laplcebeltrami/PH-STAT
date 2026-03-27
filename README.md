@@ -6,8 +6,27 @@ Currently under development (about 20% complete) but we made some of codes avail
 
 The package can perform the following topological tasks: Rips filtration, graph fltration, topological clustering, topological embedding, Hodge Laplacian based learning tasks. About 80% of functionalities are not implmented yet. The codes are constnatly updated and debugged. 
 
-If you are using any part of toy example, data or codes in the package, plese reference [arXiv:2304.05912](http://arxiv.org/abs/2304.05912). If you like to see some specific functionality, please send request to mkchung at wisc dot edu. 
+If you are using any part of toy example, data or codes in the package, plese reference [arXiv:2304.05912](http://arxiv.org/abs/2304.05912). If you like to see some specific functionality, please send request to mkchung at wisc dot edu. The table of content of the SCRIPT.mlx is as follows
 
+Morse filtration
+Rips complex
+    Boundary matrices
+    Higher order interactions
+Graph filtrations
+Topological Inference
+    Topological distance
+    Topoloigcal inference
+    Topololigcal embedding
+    Distribution of topological distance
+Topological Clustering
+    Ground truth for testing false negatives
+    Ground truth for testing false positives
+    Clustering comparisons
+Hodge Laplacian
+    Graph to Hodge Laplacian
+    Simplicial complex to Hodge Laplacian
+    Diffusion on edge signals
+    Hodge Decompostion of Brain Networks
 
 
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
