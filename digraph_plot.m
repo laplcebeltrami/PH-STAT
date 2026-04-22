@@ -19,8 +19,7 @@ A = digraph2adj(Gdir);
 A_undir = max(abs(A), abs(A')); %do not use abs. 
 % It doubles for undirected graph
 % Build undirected graph from the absolute adjacency matrix
-G = graph(A_undir);
-
+G = graph(A_undir,'upper');
 
 %p = plot(G);        % automatic layout (force-directed by default)
 %coord = [p.XData(:), p.YData(:)];   % extracted node coordinates
@@ -156,7 +155,7 @@ else
     ndir = [0 1 0];
 end
 
-% Geometry
+% Geometry: keep arrowheads visually identical across edges.
 headL = 0.2;
 headW = 0.1;
 
@@ -165,11 +164,8 @@ pm  = 0.5 * (p1 + p2);
 tip = pm + 0.18 * tdir;
 pS  = tip - headL * tdir;
 
-% Line width
-if wmax == 0
-    wmax = 1;  % avoid division by zero
-end
-lw = 2 + 2 * w / wmax;
+% Keep arrowhead stroke width fixed so edge weights do not distort head size.
+lw = 2.5;
 
 % Map weight to color
 if wmax == wmin
@@ -234,11 +230,12 @@ flows = [];
 for i = 1:n
     for j = i+1:n
 
-        wij = A(i,j);
-        wji = A(j,i);
-
+        %wij = A(i,j);
+        %wji = A(j,i);
         % net dominant flow
-        w = wij - wji;
+        %w = wij - wji;
+        
+        w = A(i,j);
 
         if abs(w) < 1e-12
             continue
