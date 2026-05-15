@@ -19,6 +19,5 @@ Hodge Laplacian
 
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
 
-Last update 2026 Feb 27
 
 
