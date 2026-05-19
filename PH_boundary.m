@@ -4,7 +4,7 @@ function B = PH_boundary(S)
 % INPUT
 %   S : cell array describing a simplicial complex.
 %
-%   Supported formats:
+%   Supported input formats:
 %
 %   1) Pure simplex list
 %      S{1} : vertices      (nV x 1)
@@ -50,75 +50,196 @@ function B = PH_boundary(S)
 %   2025 Aug 26 documentation updated
 %   2026 Mar 16 simplified and accelerated  
 
-% If S is given as (#levels x 2) cell array, 
-% use the first column only.  
+
 if size(S,2) == 2 && size(S,1) > 1
-    S = S(:,1);  
+
+    S = S(:,1);
+
 end
 
 nLevel = numel(S);
 
 if nLevel < 2
+
     B = {};
+
     return;
+
+end
+
+for d = 1:nLevel
+
+    if isempty(S{d})
+
+        S{d} = zeros(0,d);
+
+    else
+
+        if size(S{d},2) > d
+
+            S{d} = S{d}(:,1:d);
+
+        end
+
+    end
+
 end
 
 B = cell(nLevel-1,1);
 
 for d = 1:(nLevel-1)
-    L = S{d};     % (d-1)-simplices: nLower x d
-    U = S{d+1};   % d-simplices:     nUpper x (d+1)
+
+    L = S{d};
+
+    U = S{d+1};
 
     nLower = size(L,1);
+
     nUpper = size(U,1);
 
     if isempty(L) || isempty(U)
-        B{d} = sparse(nLower, nUpper);
+
+        B{d} = sparse(nLower,nUpper);
+
         continue;
+
     end
 
     if size(L,2) ~= d || size(U,2) ~= d+1
-        B{d} = sparse(nLower, nUpper);
+
+        B{d} = sparse(nLower,nUpper);
+
         continue;
+
     end
 
-    % Build lookup from lower-dimensional simplex to row index.
-    % Orientation/indexing follows S exactly.  <— fixed
     key2row = containers.Map('KeyType','char','ValueType','double');
+
     for r = 1:nLower
+
         key2row(simplex_key(L(r,:))) = r;
+
     end
 
-    % Preallocate at most (d+1)*nUpper nonzero entries.  <— fixed
-    I = zeros((d+1)*nUpper, 1);
-    J = zeros((d+1)*nUpper, 1);
-    V = zeros((d+1)*nUpper, 1);
+    I = zeros((d+1)*nUpper,1);
+
+    J = zeros((d+1)*nUpper,1);
+
+    V = zeros((d+1)*nUpper,1);
+
     nz = 0;
 
     for c = 1:nUpper
+
         up = U(c,:);
 
         for j = 1:(d+1)
-            face = up([1:j-1, j+1:end]);   % oriented face induced by U
+
+            face = up([1:j-1, j+1:end]);
+
             fkey = simplex_key(face);
 
-            if isKey(key2row, fkey)
+            if isKey(key2row,fkey)
+
                 nz = nz + 1;
+
                 I(nz) = key2row(fkey);
+
                 J(nz) = c;
+
                 V(nz) = (-1)^(j-1);
+
             end
+
         end
+
     end
 
-    B{d} = sparse(I(1:nz), J(1:nz), V(1:nz), nLower, nUpper);
+    B{d} = sparse(I(1:nz),J(1:nz),V(1:nz),nLower,nUpper);
+
 end
 
 end
 
 function k = simplex_key(v)
-% SIMPLEX_KEY returns a row key without changing vertex order.
-% Example: [3 1 5] -> '3,1,5'
-k = sprintf('%d,', v);
+
+k = sprintf('%d,',v);
+
 k(end) = [];
+
 end
+
+% 
+% 
+% % If S is given as (#levels x 2) cell array, 
+% % use the first column only.  
+% if size(S,2) == 2 && size(S,1) > 1
+%     S = S(:,1);  
+% end
+% 
+% nLevel = numel(S);
+% 
+% if nLevel < 2
+%     B = {};
+%     return;
+% end
+% 
+% B = cell(nLevel-1,1);
+% 
+% for d = 1:(nLevel-1)
+%     L = S{d};     % (d-1)-simplices: nLower x d
+%     U = S{d+1};   % d-simplices:     nUpper x (d+1)
+% 
+%     nLower = size(L,1);
+%     nUpper = size(U,1);
+% 
+%     if isempty(L) || isempty(U)
+%         B{d} = sparse(nLower, nUpper);
+%         continue;
+%     end
+% 
+%     if size(L,2) ~= d || size(U,2) ~= d+1
+%         B{d} = sparse(nLower, nUpper);
+%         continue;
+%     end
+% 
+%     % Build lookup from lower-dimensional simplex to row index.
+%     % Orientation/indexing follows S exactly.  <— fixed
+%     key2row = containers.Map('KeyType','char','ValueType','double');
+%     for r = 1:nLower
+%         key2row(simplex_key(L(r,:))) = r;
+%     end
+% 
+%     % Preallocate at most (d+1)*nUpper nonzero entries.  <— fixed
+%     I = zeros((d+1)*nUpper, 1);
+%     J = zeros((d+1)*nUpper, 1);
+%     V = zeros((d+1)*nUpper, 1);
+%     nz = 0;
+% 
+%     for c = 1:nUpper
+%         up = U(c,:);
+% 
+%         for j = 1:(d+1)
+%             face = up([1:j-1, j+1:end]);   % oriented face induced by U
+%             fkey = simplex_key(face);
+% 
+%             if isKey(key2row, fkey)
+%                 nz = nz + 1;
+%                 I(nz) = key2row(fkey);
+%                 J(nz) = c;
+%                 V(nz) = (-1)^(j-1);
+%             end
+%         end
+%     end
+% 
+%     B{d} = sparse(I(1:nz), J(1:nz), V(1:nz), nLower, nUpper);
+% end
+% 
+% end
+% 
+% function k = simplex_key(v)
+% % SIMPLEX_KEY returns a row key without changing vertex order.
+% % Example: [3 1 5] -> '3,1,5'
+% k = sprintf('%d,', v);
+% k(end) = [];
+% end
