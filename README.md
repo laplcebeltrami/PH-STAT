@@ -15,9 +15,9 @@ Topological Inference,
 Topological Clustering, 
 Hodge Laplacian
 
+# Short Course on Topological and Object-Oriented Data Analysis in 33rd International Biometric Conference, July 12, 2026
+Here are two part slides 
+
 
 
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
-
-
-
