@@ -16,7 +16,7 @@ Topological Clustering,
 Hodge Laplacian
 
 ### Short Course on Topological and Object-Oriented Data Analysis in 33rd International Biometric Conference, July 12, 2026
-Here are two part slides 
+Here are two part slides: Part I, II. 
 
 
 
