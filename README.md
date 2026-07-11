@@ -17,7 +17,7 @@ Hodge Laplacian
 
 
 ## Short Course on Topological and Object-Oriented Data Analysis in 33rd International Biometric Conference, July 12, 2026
-Here are two part slides: [Part I](https://github.com/laplcebeltrami/PH-STAT/blob/main/TDA-tutorial1-2.pdf), Part II (still working on it). 
+Here are two part slides: [Part I](https://github.com/laplcebeltrami/PH-STAT/blob/main/TDA-tutorial1-2.pdf), [Part II](https://github.com/laplcebeltrami/PH-STAT/blob/main/TDA-tutorial2-2.pdf). 
 
 
 (C) 2023- Moo K. Chung, University of Wisconsin-Madison
