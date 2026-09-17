@@ -20,8 +20,6 @@ Hodge Laplacian
 ## Tutorial on Topological Data Analysis in Connectomics (Non-Euclidean Data Analysis for Brain Structure and Function), Institute for Mathematical and Statistical Innovation (IMSI), September 17, 2026
 Click [Tutorial on Topological Data Analysis](https://github.com/laplcebeltrami/PH-STAT/blob/main/ISMI-tutorial-2026.09.17.pdf) for presentation PDF. 
 
-https://github.com/laplcebeltrami/PH-STAT/blob/main/ISMI-tutorial-2026.09.17.pdf
-
 
 ## Short Course on Topological and Object-Oriented Data Analysis in the 33rd International Biometric Conference, July 12, 2026
 Click [Topological Data Analsyis with PH-STAT](https://github.com/laplcebeltrami/PH-STAT/blob/main/TDA-tutorial.pdf) for presentation PDF. 
