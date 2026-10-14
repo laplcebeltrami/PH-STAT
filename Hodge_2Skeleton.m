@@ -70,3 +70,24 @@ function pSkeleton = Hodge_2Skeleton(adj)
     end        
     pSkeleton{3} = unique(tlist,'rows');  
 end
+
+
+function adjnew = adj2bin(adj,threshold);
+% function adjnew = adj2bin(adj,treshold)
+%
+% Binarize the weighted adjacency matrix.
+% It will return sparse binary adjacency matrix.
+%
+% (C) Moo K. Chung
+% University of Wisconsin-Madison
+% 
+% 2016 July 19. adj changed to abs(adj)
+
+adjnew=sparse(size(adj,1), size(adj,1));
+[I,J] = find(abs(adj)>threshold);
+n=length(I);
+for i=1:n
+    adjnew(I(i),J(i))=1;
+end
+
+end
