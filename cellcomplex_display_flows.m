@@ -71,7 +71,7 @@ if vmax == vmin
 end
 
 % color setup
-OrRd = brewermap(1000,'YlOrRd');
+OrRd = flipud(hot(1000));
 cmap = colormap(gca, OrRd(100:end,:));
 colormap(gca, cmap);
 
