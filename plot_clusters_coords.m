@@ -24,6 +24,7 @@ for j = 1:nC
         obs = coord_d{i,j};
         plot(obs(:,1), obs(:,2), '.k');
     end
+
     figure_bigger(16);
     axis square
     xlim([-3 3])
@@ -31,6 +32,14 @@ for j = 1:nC
     title(['Group ' int2str(j)])
 end
 
+end
 
 
+function figure_bigger(fontSize)
+% Set all text in the current figure to the specified font size.
+% Example: figure_bigger(16)
+
+fig = gcf;
+h = findall(fig, '-property', 'FontSize');
+set(h, 'FontSize', fontSize);
 end
