@@ -1,4 +1,4 @@
-function pID = FDR(p,q)
+ function pID = FDR(p,q)
 % FORMAT pID = FDR(p,q)
 %
 % INPUT
@@ -47,3 +47,11 @@ figure_bigger(16)
 end
 
 
+function figure_bigger(fontSize)
+% Set all text in the current figure to the specified font size.
+% Example: figure_bigger(16)
+
+fig = gcf;
+h = findall(fig, '-property', 'FontSize');
+set(h, 'FontSize', fontSize);
+end
