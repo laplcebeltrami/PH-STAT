@@ -2,7 +2,7 @@
 
 **A MATLAB toolbox for statistical analysis of network topology, with an emphasis on brain networks.**
 
-Toolbox is currently under development and we have implemented about 20% of function calls. PH-STAT connects the structure of signals and networks to statistical questions: how networks differ between groups, how their organization changes across scales, and how edge flows separate into source–sink and cyclic components. The MATLAB Live Script [`SCRIPT.mlx`](https://github.com/laplcebeltrami/PH-STAT/blob/main/SCRIPT.mlx), provides worked examples with code, explanations, and visualizations.
+Toolbox is currently under development (20% of complete). PH-STAT connects the structure of signals and networks to statistical questions: how networks differ between groups, how their organization changes across scales, and how edge flows separate into source–sink and cyclic components. The MATLAB Live Script [`SCRIPT.mlx`](https://github.com/laplcebeltrami/PH-STAT/blob/main/SCRIPT.mlx), provides worked examples with code, explanations, and visualizations.
 
 ![PH-STAT workflow: signal smoothing and persistence, Rips complexes, graph filtrations, Wasserstein-based group inference, topological clustering, Hodge decomposition, and edge diffusion.](assets/workflow/ph-stat-workflow.gif)
 
