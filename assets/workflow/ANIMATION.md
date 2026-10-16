@@ -2,8 +2,6 @@
 
 The animation is a visual walkthrough of methods in [`SCRIPT.mlx`](https://github.com/laplcebeltrami/PH-STAT/blob/835d5eecc760181ecef06883afbbb42c24bcfb0e/SCRIPT.mlx), using **computed synthetic examples**.
 
-**Format:** 1600 × 1000 pixels, 48.7 seconds, 20 frames per second, continuous loop. **GIF size:** 3,016,488 bytes (3.016 MB), below the 25 MB limit.
-
 ## Source and reproducibility
 
 - Toolbox source: [PH-STAT commit `835d5ee`](https://github.com/laplcebeltrami/PH-STAT/tree/835d5eecc760181ecef06883afbbb42c24bcfb0e), inspected October 16, 2026.
@@ -27,15 +25,6 @@ The selected examples were executed and checked. This does not constitute an end
 | **Hodge decomposition** | The Live Script's five-node, six-edge example with one filled triangle. `Hodge_decompose` returns gradient, curl, and harmonic flows. Edge indexing is checked against the adjacency matrix before plotting. The same arrow-width scale is used across the four panels. Moving markers indicate direction; they are not particle simulations. |
 | **Edge diffusion** | The same filled-triangle example uses `L1 = B1' * B1 + B2 * B2'`. The graph term comes from `Hodge_laplacian`; the face term is added explicitly. Spectral diffusion `exp(-t*L1)*X` follows the formula in the Live Script. The time parameter is a mathematical diffusion scale. Gradient and curl components decay toward the harmonic projection. |
 
-The numerical checks include monotonic graph Betti curves, symmetry and additivity of the squared-distance matrices, and Hodge reconstruction, divergence, curl, and orthogonality residuals. The largest Hodge residual was below `1.2e-15` for this example. The inference example produced `R = 50.279597` and `p = 1/210 = 0.0047619`; these are synthetic demonstration values, not evidence about a clinical group.
-
-## Regenerate
-
-To render from the saved outputs, run the following from the repository root in an environment with Python 3, NumPy, and Pillow:
-
-```sh
-python3 tools/workflow/render_workflow.py
-```
 
 To regenerate the numeric data, place a checkout of the pinned PH-STAT commit in `reference/github-PH-STAT`, then run from the repository root in MATLAB:
 
@@ -45,4 +34,3 @@ export_workflow_data(fullfile(pwd,'reference','github-PH-STAT'), ...
     fullfile(pwd,'tools','workflow','data.json'))
 ```
 
-The renderer uses Arial fonts on macOS, or DejaVu Sans on Linux. Font substitution can change text appearance. It writes the GIF and still overview to `assets/workflow/`, along with intermediate previews and validation metadata in `build/workflow/`. The export enforces a maximum GIF size of **25,000,000 bytes**.
