@@ -21,8 +21,6 @@ PH-STAT connects the structure of signals and networks to statistical questions:
 | **Covariate and site-effect assessment** | Does topology vary across categorical covariate groups or imaging sites? The Live Script includes pairwise site comparisons and false discovery rate correction. | `WS_pdist2`, `WS_ratio`, `WS_transpositions`, `FDR` |
 | **Network Hodge theory** | How do directed edge signals separate into source–sink variation, local circulation, and harmonic flow? Decompose signals and visualize edge diffusion. | `Hodge_1Skeleton`, `Hodge_2Skeleton`, `Hodge_decompose`, `Hodge_diffusion_plot`, `Hodge_diffusion_animate` |
 
-The site-effect example assesses associations with a covariate; it does not automatically remove covariate effects. Graph filtrations and Rips complexes are distinct constructions: the former tracks edges, while the latter can also fill triangles and higher-dimensional simplices.
-
 ## Get started
 
 1. Download this repository using **Code → Download ZIP**, or clone it, and open the repository folder in MATLAB.
@@ -35,9 +33,9 @@ The site-effect example assesses associations with a covariate; it does not auto
 
 3. Run the sections of interest in order, including preceding sections that create their inputs. The script covers signal analysis, simplicial complexes, graph filtrations, inference, clustering, site comparisons, and network Hodge theory.
 
-**Requirements:** MATLAB. Examples using functions such as `normrnd`, `pdist2`, and `kmeans` also require the Statistics and Machine Learning Toolbox. Some simulation and permutation sections perform many iterations; their settings are exposed in the Live Script.
+**Requirements:** MATLAB. Examples using functions such as `normrnd`, `pdist2`, and `kmeans` require the Statistics and Machine Learning Toolbox. Some simulation and permutation sections perform many iterations; their settings are explained in the Live Script.
 
-**Inputs and outputs:** Examples use sampled signals, point coordinates, weighted connectivity matrices, and edge-flow signals. Outputs include persistence summaries, Betti curves, distance matrices, test statistics and p-values, embeddings, clustering summaries, and Hodge components. `WS_pdist2` returns **squared** distances in `D0`, `D1`, and `D01`.
+**Inputs and outputs:** Examples use sampled signals, point coordinates, weighted connectivity matrices, and edge-flow signals. Outputs include persistence summaries, Betti curves, distance matrices, test statistics and p-values, embeddings, clustering summaries, and Hodge components. For instance, `WS_pdist2` returns **squared** topological distances in `D0`, `D1`, and `D01`.
 
 ## Documentation and tutorials
 
