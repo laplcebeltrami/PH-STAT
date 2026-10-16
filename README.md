@@ -8,7 +8,7 @@ Toolbox is currently under development and we have implemented about 20% of func
 
 *The animation uses computed synthetic examples adapted from `SCRIPT.mlx`. [View the still overview](assets/workflow/ph-stat-workflow-overview.png) or [read the animation methods](assets/workflow/ANIMATION.md).*
 
-## What the toolbox does
+## What the toolbox does 
 
 | Capability | Research question or output | Main functions |
 | --- | --- | --- |
