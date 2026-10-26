@@ -39,7 +39,7 @@ PH-STAT connects the structure of signals and networks to statistical questions:
 
 ## Documentation and tutorials
 
-- [PH-STAT manual — arXiv:2304.05912](https://arxiv.org/abs/2304.05912), revised July 2026; [repository PDF](https://github.com/laplcebeltrami/PH-STAT/blob/main/PH-STAT.pdf). Plan to publish once the toolbox is 100% complete.
+- [PH-STAT manual — arXiv:2304.05912](https://arxiv.org/abs/2304.05912), revised July 2026; Plan to publish once the toolbox is 100% complete.
 - [Tutorial on Topological Data Analysis in Connectomics](https://github.com/laplcebeltrami/PH-STAT/blob/main/ISMI-tutorial-2026.09.17.pdf), Institute for Mathematical and Statistical Innovation (IMSI), The University of Chicago, September 17, 2026.
 - [Topological Data Analysis with PH-STAT](https://github.com/laplcebeltrami/PH-STAT/blob/main/TDA-tutorial.pdf), Short Course on Topological and Object-Oriented Data Analysis, 33rd International Biometric Conference (IBC), July 12, 2026.
 
