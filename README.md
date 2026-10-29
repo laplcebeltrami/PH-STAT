@@ -9,7 +9,7 @@ PH-STAT connects the structure of signals and networks to statistical questions:
 
 *The animation uses computed synthetic examples adapted from `SCRIPT.mlx` ([read how the animation was generated](assets/workflow/ANIMATION.md)).*
 
-## What the toolbox does currently
+## What the toolbox does currently (at least in provided toy examples)
 
 | Capability | Research question or output | Main functions |
 | --- | --- | --- |
